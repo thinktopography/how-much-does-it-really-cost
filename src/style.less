@@ -1,0 +1,85 @@
+@red: #DB2828;
+@black: #333333;
+
+.wdic {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+.wdic-header {
+  flex: 0 0 80px;
+  padding: 20px;
+  background: @red;
+}
+.wdic-body {
+  flex: 1;
+  display: flex;
+}
+.wdic-sidebar {
+  flex: 0 0 300px;
+  padding: 30px;
+  background: #FFF;
+}
+.wdic-map {
+  flex: 1;
+  display: flex;
+  iframe {
+    flex: 1;
+  }
+}
+.wdic-body {
+  flex: 1;
+  display: flex;
+}
+.wdic-footer {
+  flex: 0 0 55px;
+  background: @black;
+  padding: 20px;
+  display: flex;
+  .segment {
+    flex: 0 0 10%;
+    font-size: 0.8em;
+  }
+  .key {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: #FFF;
+    margin-right: 10px;
+  }
+  .segment9 {
+    background-color: lighten(@red, 2%)
+  }
+  .segment8 {
+    background-color: lighten(@red, 4%)
+  }
+  .segment7 {
+    background-color: lighten(@red, 6%)
+  }
+  .segment6 {
+    background-color: lighten(@red, 8%)
+  }
+  .segment5 {
+    background-color: lighten(@red, 10%)
+  }
+  .segment4 {
+    background-color: lighten(@red, 12%)
+  }
+  .segment3 {
+    background-color: lighten(@red, 14%)
+  }
+  .segment2 {
+    background-color: lighten(@red, 16%)
+  }
+  .segment1 {
+    background-color: lighten(@red, 18%)
+  }
+  .segment0 {
+    background-color: lighten(@red, 100%)
+  }
+  color: #FFF;
+}
