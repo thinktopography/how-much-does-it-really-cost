@@ -1,5 +1,6 @@
 @red: #DB2828;
-@black: #333333;
+@black: #000;
+@grey: #444;
 
 .wdic {
   position: fixed;
@@ -11,9 +12,18 @@
   flex-direction: column;
 }
 .wdic-header {
-  flex: 0 0 80px;
-  padding: 20px;
-  background: @red;
+  flex: 0 0 90px;
+  padding: 10px;
+  background: @black;
+  display: flex;
+  h5 {
+    color: #FFFFFF;
+    margin: 0 0 10px;
+  }
+  .metric {
+    text-align: center;
+    flex: 1;
+  }
 }
 .wdic-body {
   flex: 1;
@@ -21,8 +31,28 @@
 }
 .wdic-sidebar {
   flex: 0 0 300px;
-  padding: 30px;
+  padding: 20px;
   background: #FFF;
+}
+.wdic-details {
+  flex: 0 0 300px;
+  padding: 20px;
+  background: #FFF;
+  table {
+    width: 100%;
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    &:first-child { border-bottom: none; }
+    th { background: @red; color: #FFF; }
+    td:first-child { font-weight: bold; width: 80% }
+    td:last-child { text-align: right; color: #666; width: 20% }
+    td, th {
+      font-size: .8em;
+      border-left: 1px solid #CCC;
+      border-top: 1px solid #CCC;
+      padding: 5px;
+    }
+  }
 }
 .wdic-map {
   flex: 1;
@@ -36,13 +66,15 @@
   display: flex;
 }
 .wdic-footer {
-  flex: 0 0 55px;
-  background: @black;
-  padding: 20px;
+  flex: 0 0 35px;
+  background: @grey;
+  padding: 10px;
   display: flex;
+  color: #FFF;
   .segment {
-    flex: 0 0 10%;
+    flex: 1;
     font-size: 0.8em;
+    text-align: center;
   }
   .key {
     display: inline-block;
@@ -51,35 +83,4 @@
     background: #FFF;
     margin-right: 10px;
   }
-  .segment9 {
-    background-color: lighten(@red, 2%)
-  }
-  .segment8 {
-    background-color: lighten(@red, 4%)
-  }
-  .segment7 {
-    background-color: lighten(@red, 6%)
-  }
-  .segment6 {
-    background-color: lighten(@red, 8%)
-  }
-  .segment5 {
-    background-color: lighten(@red, 10%)
-  }
-  .segment4 {
-    background-color: lighten(@red, 12%)
-  }
-  .segment3 {
-    background-color: lighten(@red, 14%)
-  }
-  .segment2 {
-    background-color: lighten(@red, 16%)
-  }
-  .segment1 {
-    background-color: lighten(@red, 18%)
-  }
-  .segment0 {
-    background-color: lighten(@red, 100%)
-  }
-  color: #FFF;
 }

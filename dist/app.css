@@ -8,9 +8,18 @@
   flex-direction: column;
 }
 .wdic-header {
-  flex: 0 0 80px;
-  padding: 20px;
-  background: #DB2828;
+  flex: 0 0 90px;
+  padding: 10px;
+  background: #000;
+  display: flex;
+}
+.wdic-header h5 {
+  color: #FFFFFF;
+  margin: 0 0 10px;
+}
+.wdic-header .metric {
+  text-align: center;
+  flex: 1;
 }
 .wdic-body {
   flex: 1;
@@ -18,8 +27,41 @@
 }
 .wdic-sidebar {
   flex: 0 0 300px;
-  padding: 30px;
+  padding: 20px;
   background: #FFF;
+}
+.wdic-details {
+  flex: 0 0 300px;
+  padding: 20px;
+  background: #FFF;
+}
+.wdic-details table {
+  width: 100%;
+  border-bottom: 1px solid #CCC;
+  border-right: 1px solid #CCC;
+}
+.wdic-details table:first-child {
+  border-bottom: none;
+}
+.wdic-details table th {
+  background: #DB2828;
+  color: #FFF;
+}
+.wdic-details table td:first-child {
+  font-weight: bold;
+  width: 80%;
+}
+.wdic-details table td:last-child {
+  text-align: right;
+  color: #666;
+  width: 20%;
+}
+.wdic-details table td,
+.wdic-details table th {
+  font-size: .8em;
+  border-left: 1px solid #CCC;
+  border-top: 1px solid #CCC;
+  padding: 5px;
 }
 .wdic-map {
   flex: 1;
@@ -33,15 +75,16 @@
   display: flex;
 }
 .wdic-footer {
-  flex: 0 0 55px;
-  background: #333333;
-  padding: 20px;
+  flex: 0 0 35px;
+  background: #444;
+  padding: 10px;
   display: flex;
   color: #FFF;
 }
 .wdic-footer .segment {
-  flex: 0 0 10%;
+  flex: 1;
   font-size: 0.8em;
+  text-align: center;
 }
 .wdic-footer .key {
   display: inline-block;
@@ -49,34 +92,4 @@
   height: 12px;
   background: #FFF;
   margin-right: 10px;
-}
-.wdic-footer .segment9 {
-  background-color: #dc3131;
-}
-.wdic-footer .segment8 {
-  background-color: #de3939;
-}
-.wdic-footer .segment7 {
-  background-color: #df4242;
-}
-.wdic-footer .segment6 {
-  background-color: #e14b4b;
-}
-.wdic-footer .segment5 {
-  background-color: #e25454;
-}
-.wdic-footer .segment4 {
-  background-color: #e45c5c;
-}
-.wdic-footer .segment3 {
-  background-color: #e56565;
-}
-.wdic-footer .segment2 {
-  background-color: #e76e6e;
-}
-.wdic-footer .segment1 {
-  background-color: #e87777;
-}
-.wdic-footer .segment0 {
-  background-color: #ffffff;
 }
