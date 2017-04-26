@@ -8,34 +8,33 @@ import _ from 'lodash'
 const pallettes = {
   h: [
     { min: 0, max: 0, color: 'white' },
-    { min: 1, max: 40, color: 'red' },
-    { min: 41, max: 45, color: 'orange' },
-    { min: 46, max: 50, color: 'yellow' },
-    { min: 51, max: 55, color: 'green' },
-    { min: 56, max: 60, color: 'blue' },
-    { min: 66, max: 75, color: 'purple' },
-    { min: 76, max: 80, color: 'violet' },
-    { min: 81, max: 85, color: 'brown' },
-    { min: 86, max: 90, color: 'grey' },
-    { min: 90, max: 100, color: 'black' }
+    { min: 1, max: 40, color: '#74add1' },
+    { min: 41, max: 45, color: '#e0f3f8' },
+    { min: 46, max: 50, color: '#ffffbf' },
+    { min: 51, max: 55, color: '#fee090' },
+    { min: 56, max: 60, color: '#fdae61' },
+    { min: 66, max: 75, color: '#f46d43' },
+    { min: 76, max: 80, color: '#a50026' },
+    { min: 81, max: 85, color: '#b2182b' },
+    { min: 86, color: '#67001f' }
   ],
   t: [
     { min: 0, max: 0, color: 'white' },
-    { min: 1, max: 20, color: 'red' },
-    { min: 21, max: 30, color: 'orange' },
-    { min: 31, max: 40, color: 'yellow' },
-    { min: 41, max: 50, color: 'green' },
-    { min: 51, max: 60, color: 'blue' },
-    { min: 61, max: 100, color: 'purple' }
+    { min: 1, max: 20, color: '#74add1' },
+    { min: 21, max: 30, color: '#e0f3f8' },
+    { min: 31, max: 40, color: '#ffffbf' },
+    { min: 41, max: 50, color: '#fdae61' },
+    { min: 51, max: 60, color: '#d73027' },
+    { min: 61, color: '#a50026' }
 
   ],
   ht: [
     { min: 0, max: 0, color: 'white' },
-    { min: 1, max: 15, color: 'red' },
-    { min: 16, max: 20, color: 'orange' },
-    { min: 21, max: 25, color: 'yellow' },
-    { min: 26, max: 30, color: 'green' },
-    { min: 31, max: 100, color: 'blue' }
+    { min: 1, max: 15, color: '#e0f3f8' },
+    { min: 16, max: 20, color: '#ffffbf' },
+    { min: 21, max: 25, color: '#fdae61' },
+    { min: 26, max: 30, color: '#d73027' },
+    { min: 31, color: '#a50026' }
   ]
 }
 
@@ -201,7 +200,7 @@ class Main extends React.Component {
             legend.map((segment, index) => (
               <div className="segment" key={`metric${index}`}>
                 <div className={`key`} style={{background: segment.color}}></div>
-                <span>{ segment.min } - { segment.max }</span>
+                <span>{ segment.max ? `${segment.min} - ${segment.max}` : `${segment.min}+` }</span>
               </div>
             ))}
         </div>
@@ -264,6 +263,7 @@ class Main extends React.Component {
       this.blockgroups[index].polygon = new google.maps.Polygon({
         path: blockgroup.coordinates,
         strokeOpacity: 1,
+        strokeColor: '#888888',
         strokeWeight: 1,
         fillOpacity: 0.35
       })
@@ -286,11 +286,13 @@ class Main extends React.Component {
     this.blockgroups.map((blockgroup, index) => {
       const value = blockgroup.metadata[metric]
       const color = legend.filter(segment => {
-        return value >= segment.min && value <= segment.max
+        const min = segment.min
+        const max = !_.isNil(segment.max) ? segment.max : 1000
+        console.log('%s:%s:%s',value,min,max)
+        return value >= min && value <= max
       })[0].color
       blockgroup.polygon.setOptions({
         fillOpacity: 0.35,
-        strokeColor: color,
         fillColor: color
       })
     })
