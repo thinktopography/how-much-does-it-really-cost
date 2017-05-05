@@ -2,11 +2,47 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './style.less'
 import data from './data.json'
+import routeData from './routes.json'
 import cheerio from 'cheerio'
 import _ from 'lodash'
 
+const tcat = {
+  10: 416,
+  11: 485,
+  13: 453,
+  14: 454,
+  15: 455,
+  17: 508,
+  20: 456,
+  21: 439,
+  30: 440,
+  31: 482,
+  32: 459,
+  36: 442,
+  37: 443,
+  40: 444,
+  41: 491,
+  43: 445,
+  51: 489,
+  52: 446,
+  53: 447,
+  65: 448,
+  67: 449,
+  70: 513,
+  72: 512,
+  74: 325,
+  75: 465,
+  77: 407,
+  81: 495,
+  82: 398,
+  83: 487,
+  90: 450,
+  92: 511,
+  93: 451
+}
+
 const pallettes = {
-  h: [
+  ht: [
     { min: 0, max: 0, color: 'white' },
     { min: 1, max: 40, color: '#74add1' },
     { min: 41, max: 45, color: '#e0f3f8' },
@@ -18,7 +54,7 @@ const pallettes = {
     { min: 81, max: 85, color: '#b2182b' },
     { min: 86, color: '#67001f' }
   ],
-  t: [
+  h: [
     { min: 0, max: 0, color: 'white' },
     { min: 1, max: 20, color: '#74add1' },
     { min: 21, max: 30, color: '#e0f3f8' },
@@ -28,7 +64,7 @@ const pallettes = {
     { min: 61, color: '#a50026' }
 
   ],
-  ht: [
+  t: [
     { min: 0, max: 0, color: 'white' },
     { min: 1, max: 15, color: '#e0f3f8' },
     { min: 16, max: 20, color: '#ffffbf' },
@@ -111,12 +147,14 @@ class Main extends React.Component {
     super(props)
     this.ranges = {}
     this.blockgroups = []
+    this.routes = []
     this.marker = null
     this.state = {
       type: 'h',
       metric: 'h_ami',
       details: null,
-      legend: null
+      legend: null,
+      busRoutes: []
     }
   }
 
@@ -151,7 +189,7 @@ class Main extends React.Component {
           <div className="wdic-sidebar">
             <div className="form">
               <h4>What Does it Really Cost?</h4>
-              <p>VHS actually. Quinoa vinyl sartorial, pour-over cronut vexillologist VHS. Af microdosing gentrify bicycle rights, marfa affogato tote bag kickstarter readymade authentic air plant craft beer poke VHS. Selvage letterpress af, lumbersexual snackwave shoreditch butcher marfa. Small batch kombucha offal kinfolk hella, vice hexagon literally mumblecore</p>
+              <p>VHS actually. Quinoa vinyl sartorial, pour-over cronut vexillologist VHS. Af microdosing gentrify bicycle rights, marfa affogato tote bag kickstarter readymade authentic air plant craft beer poke VHS. Selvage letterpress af, lumbersexual snackwave shoreditch butcher marfa.</p>
               <form onSubmit={ this._handleSubmit.bind(this) }>
                 <div className="form-group">
                   <input type="text" className="form-control" ref="street" id="street" placeholder="Street" />
@@ -167,6 +205,16 @@ class Main extends React.Component {
                 </div>
                 <button type="submit" className="btn btn-default btn-block btn-danger">Lookup my House</button>
               </form>
+              { this.state.busRoutes.length > 0 &&
+                <div className="routes">
+                  <p>This address is located on the following TCAT bus routes:</p>
+                  <ul>
+                    { this.state.busRoutes.map((route, index) => {
+                      return <li key={`route_${index}`}><a href={`https://tcat.nextinsight.com/routes/${ tcat[route] }`} target="_blank">{ route }</a></li>
+                    }) }
+                  </ul>
+                </div>
+              }
             </div>
           </div>
           <div className="wdic-map" ref="map" />
@@ -176,19 +224,21 @@ class Main extends React.Component {
                 <h4>BLOCKGROUP { details.ID }</h4>
                 { sections.map(section => (
                   <table>
-                    <tr>
-                      <th colSpan="2">{ section.label }</th>
-                    </tr>
-                    { Object.keys(section.data).map(key => (
+                    <tbody>
                       <tr>
-                        <td>{ section.data[key].label }</td>
-                        <td>
-                          { section.data[key].unit === '$' ? section.data[key].unit : null }
-                          { details[key] }
-                          { section.data[key].unit !== '$' ? section.data[key].unit : null }
-                        </td>
+                        <th colSpan="2">{ section.label }</th>
                       </tr>
-                    )) }
+                      { Object.keys(section.data).map((key, index) => (
+                        <tr key={`row_${index}`}>
+                          <td>{ section.data[key].label }</td>
+                          <td>
+                            { section.data[key].unit === '$' ? section.data[key].unit : null }
+                            { details[key] }
+                            { section.data[key].unit !== '$' ? section.data[key].unit : null }
+                          </td>
+                        </tr>
+                      )) }
+                    </tbody>
                   </table>
                 ))}
               </div>
@@ -219,6 +269,9 @@ class Main extends React.Component {
       const coordinates = feature.geometry.coordinates[0].map(coordinates => {
         return { lat: coordinates[1], lng: coordinates[0] }
       })
+      const polygon = new google.maps.Polygon({
+        path: coordinates
+      })
       const parsed = cheerio.load(feature.properties.description)
       const rows = parsed('table table tr')
       const metadata = Object.keys(rows).reduce((metadata, index) => {
@@ -237,9 +290,35 @@ class Main extends React.Component {
         }
         return metadata
       }, {})
-
-      return { coordinates, metadata }
+      return { polygon, metadata }
     })
+    this.routes = routeData.features.reduce((routes, feature, index) => {
+      if(!feature.geometry.coordinates) return routes
+      const coordinates = feature.geometry.coordinates[0].map(coordinates => {
+        return { lat: coordinates[1], lng: coordinates[0] }
+      })
+      const polygon = new google.maps.Polygon({
+        path: coordinates
+      })
+      const parsed = cheerio.load(feature.properties.description)
+      const rows = parsed('table table tr')
+      const metadata = Object.keys(rows).reduce((metadata, index) => {
+        const row = rows[index]
+        if(row && row.children && row.children[1]) {
+          const key = row.children[1].children[0].data
+          const value = row.children[3].children[0].data
+          return {
+            ...metadata,
+            [key]: value
+          }
+        }
+        return metadata
+      }, {})
+      return [
+        ...routes,
+        { polygon, metadata }
+      ]
+    }, [])
     this.ranges = Object.keys(this.ranges).reduce((ranges, key) => {
       return {
         ...ranges,
@@ -258,24 +337,18 @@ class Main extends React.Component {
       center: tompkins
     })
     this.geocoder = new google.maps.Geocoder()
-
     this.blockgroups.map((blockgroup, index) => {
-      this.blockgroups[index].polygon = new google.maps.Polygon({
-        path: blockgroup.coordinates,
-        strokeOpacity: 1,
-        strokeColor: '#888888',
-        strokeWeight: 1,
-        fillOpacity: 0.35
-      })
       this.blockgroups[index].polygon.setMap(this.map)
-
       this.blockgroups[index].polygon.addListener('click', this._handleClick.bind(this, this.blockgroups[index]))
     })
   }
 
   _handleClick(blockgroup) {
     this._changeMetric(this.state.type, this.state.metric)
-    blockgroup.polygon.setOptions({ fillOpacity: 1 });
+    blockgroup.polygon.setOptions({
+      fillColor: '#DB2828',
+      fillOpacity: 1
+    })
     this.setState({
       details: blockgroup.metadata
     })
@@ -288,12 +361,14 @@ class Main extends React.Component {
       const color = legend.filter(segment => {
         const min = segment.min
         const max = !_.isNil(segment.max) ? segment.max : 1000
-        console.log('%s:%s:%s',value,min,max)
         return value >= min && value <= max
       })[0].color
       blockgroup.polygon.setOptions({
         fillOpacity: 0.35,
-        fillColor: color
+        fillColor: color,
+        strokeOpacity: 1,
+        strokeColor: '#888888',
+        strokeWeight: 1
       })
     })
     this.setState({ type, metric, legend })
@@ -307,16 +382,23 @@ class Main extends React.Component {
     const address = `${street} ${city} ${state} ${zip}`
     this.geocoder.geocode({ address }, (results, status) => {
       if(status == google.maps.GeocoderStatus.OK) {
-        if(this.marker) {
-          this.marker.setMap(null);
-          this.marker = null
-        }
-        this.marker = new google.maps.Marker({
-          map: this.map,
-          position: results[0].geometry.location
+        const latLng = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+        const busRoutes = this.routes.reduce((routes, route, index) => {
+          if(!google.maps.geometry.poly.containsLocation(latLng, route.polygon)) return routes
+          if(_.includes(routes, route.metadata.RT_NUM)) return routes
+          return [
+            ...routes,
+            route.metadata.RT_NUM
+          ]
+        }, []).sort()
+        this.setState({
+          busRoutes
         })
-      } else {
-        console.log('foo')
+        const blockgroup = this.blockgroups.reduce((chosen, blockgroup) => {
+          if(!google.maps.geometry.poly.containsLocation(latLng, blockgroup.polygon)) return chosen
+          return blockgroup
+        }, null)
+        this._handleClick(blockgroup)
       }
     })
     e.preventDefault()

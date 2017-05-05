@@ -33,6 +33,28 @@
   flex: 0 0 300px;
   padding: 20px;
   background: #FFF;
+  h4 {
+    margin: 0;
+    font-size: 1.1em;
+  }
+  p {
+    font-size: 1.0em;
+  }
+  form {
+    .form-group {
+      margin: 0;
+      &:first-child .form-control {
+        border-radius: 5px 5px 0 0;
+      }
+      .form-control {
+        border-radius: 0;
+        border-bottom: none;
+      }
+    }
+    .btn {
+      border-radius: 0 0 5px 5px;
+    }
+  }
 }
 .wdic-details {
   flex: 0 0 300px;
@@ -82,5 +104,35 @@
     height: 12px;
     background: #FFF;
     margin-right: 10px;
+  }
+}
+.routes {
+  margin-top: 10px;
+  background-color: #2aa7dd;
+  color: #FFF;
+  border-radius: 5px;
+  padding: 5px;
+  text-align: center;
+  ul {
+    margin: 0;
+    padding: 5px;
+    background-color: #FFF;
+    overflow: hidden;
+    li {
+      list-style: none;
+      float: left;
+      margin: 3px;
+      a {
+        background-color: #2aa7dd;
+        color: #FFF;
+        text-decoration: none;
+        display: block;
+        border-radius: 5px;
+        padding: 9px;
+        &:hover {
+          background-color: #0885bb;
+        }
+      }
+    }
   }
 }
