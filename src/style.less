@@ -1,4 +1,5 @@
 @red: #DB2828;
+@blue: #2aa7dd;
 @black: #000;
 @grey: #444;
 
@@ -74,6 +75,9 @@
       border-top: 1px solid #CCC;
       padding: 5px;
     }
+    i {
+      color: @red;
+    }
   }
 }
 .wdic-map {
@@ -108,7 +112,7 @@
 }
 .routes {
   margin-top: 10px;
-  background-color: #2aa7dd;
+  background-color: @blue;
   color: #FFF;
   border-radius: 5px;
   padding: 5px;
@@ -135,4 +139,10 @@
       }
     }
   }
+}
+.tooltip {
+  width: 200px;
+}
+.tooltip-inner {
+  max-width: 200px;
 }

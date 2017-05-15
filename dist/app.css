@@ -83,6 +83,9 @@
   border-top: 1px solid #CCC;
   padding: 5px;
 }
+.wdic-details table i {
+  color: #DB2828;
+}
 .wdic-map {
   flex: 1;
   display: flex;
@@ -142,4 +145,10 @@
 }
 .routes ul li a:hover {
   background-color: #0885bb;
+}
+.tooltip {
+  width: 200px;
+}
+.tooltip-inner {
+  max-width: 200px;
 }

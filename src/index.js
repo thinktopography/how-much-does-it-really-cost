@@ -49,7 +49,8 @@ const pallettes = {
     { min: 46, max: 50, color: '#ffffbf' },
     { min: 51, max: 55, color: '#fee090' },
     { min: 56, max: 60, color: '#fdae61' },
-    { min: 66, max: 75, color: '#f46d43' },
+    { min: 61, max: 65, color: '#f46d43' },
+    { min: 66, max: 75, color: '#d73027' },
     { min: 76, max: 80, color: '#a50026' },
     { min: 81, max: 85, color: '#b2182b' },
     { min: 86, color: '#67001f' }
@@ -80,10 +81,12 @@ const sections = [
     data: {
       ht_ami: {
         label: 'Average Income',
+        icon: 'check-square',
         unit: '%'
       },
       ht_80ami: {
         label: 'Modest Income',
+        icon: 'check-square',
         unit: '%'
       }
     }
@@ -92,10 +95,12 @@ const sections = [
     data: {
       h_ami: {
         label: 'Average Income',
+        icon: 'check-square',
         unit: '%'
       },
       h_80ami: {
         label: 'Modest Income',
+        icon: 'check-square',
         unit: '%'
       }
     }
@@ -104,10 +109,12 @@ const sections = [
     data: {
       t_ami: {
         label: 'Average Income',
+        icon: 'check-square',
         unit: '%'
       },
       t_80ami: {
         label: 'Modest Income',
+        icon: 'check-square',
         unit: '%'
       }
     }
@@ -116,10 +123,12 @@ const sections = [
     data: {
       t_cost_ami: {
         label: 'Average Income',
+        icon: 'check-square',
         unit: '$'
       },
       t_cost_80a: {
         label: 'Modest Income',
+        icon: 'check-square',
         unit: '$'
       }
     }
@@ -128,14 +137,17 @@ const sections = [
     data: {
       vmt_per_hh: {
         label: 'Annual Vehicle Miles Traveled per Household',
+        icon: 'check-square',
         unit: 'mi'
       },
       co2_per_hh: {
         label: 'Annual CO2 released per Household',
+        icon: 'check-square',
         unit: 'PPM'
       },
       h_cost: {
         label: 'Average Monthly Housing Cost per Household',
+        icon: 'check-square',
         unit: '$'
       }
     }
@@ -166,22 +178,22 @@ class Main extends React.Component {
           <div className="metric">
             <h5>Housing</h5>
             <div className="btn-group">
-              <button type="button" className={`btn ${metric === 'h_ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'h', 'h_ami')}>Average Income</button>
-              <button type="button" className={`btn ${metric === 'h_80ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'h', 'h_80ami')}>Modest Income</button>
+              <button type="button" className={`btn ${metric === 'h_ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'h', 'h_ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Average Income - Some text about an average income goes here" /></button>
+              <button type="button" className={`btn ${metric === 'h_80ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'h', 'h_80ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Modest Income - Some text about an modest income goes here" /></button>
             </div>
           </div>
           <div className="metric">
             <h5>Transportation</h5>
             <div className="btn-group">
-              <button type="button" className={`btn ${metric === 't_ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 't', 't_ami')}>Average Income</button>
-              <button type="button" className={`btn ${metric === 't_80ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 't', 't_80ami')}>Modest Income</button>
+              <button type="button" className={`btn ${metric === 't_ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 't', 't_ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Average Income - Some text about an average income goes here" /></button>
+              <button type="button" className={`btn ${metric === 't_80ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 't', 't_80ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Modest Income - Some text about an modest income goes here" /></button>
             </div>
           </div>
           <div className="metric">
             <h5>Housing & Transportation</h5>
             <div className="btn-group">
-              <button type="button" className={`btn ${metric === 'ht_ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'ht', 'ht_ami')}>Average Income</button>
-              <button type="button" className={`btn ${metric === 'ht_80ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'ht', 'ht_80ami')}>Modest Income</button>
+              <button type="button" className={`btn ${metric === 'ht_ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'ht', 'ht_ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Average Income - Some text about an average income goes here" /></button>
+              <button type="button" className={`btn ${metric === 'ht_80ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'ht', 'ht_80ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Modest Income - Some text about an modest income goes here" /></button>
             </div>
           </div>
         </div>
@@ -221,7 +233,6 @@ class Main extends React.Component {
           <div className="wdic-details">
             { details &&
               <div>
-                <h4>BLOCKGROUP { details.ID }</h4>
                 { sections.map(section => (
                   <table>
                     <tbody>
@@ -230,7 +241,9 @@ class Main extends React.Component {
                       </tr>
                       { Object.keys(section.data).map((key, index) => (
                         <tr key={`row_${index}`}>
-                          <td>{ section.data[key].label }</td>
+                          <td>
+                            <i className={`fa fa-${section.data[key].icon}`} /> { section.data[key].label }
+                          </td>
                           <td>
                             { section.data[key].unit === '$' ? section.data[key].unit : null }
                             { details[key] }
@@ -262,6 +275,7 @@ class Main extends React.Component {
     this._prepareData()
     this._drawMap()
     this._changeMetric('h', 'h_ami')
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
   _prepareData() {
@@ -364,7 +378,7 @@ class Main extends React.Component {
         return value >= min && value <= max
       })[0].color
       blockgroup.polygon.setOptions({
-        fillOpacity: 0.35,
+        fillOpacity: .5,
         fillColor: color,
         strokeOpacity: 1,
         strokeColor: '#888888',
