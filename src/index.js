@@ -75,60 +75,71 @@ const pallettes = {
   ]
 }
 
-const sections = [
+const percentageSections = [
   {
-    label: 'Housing and Transportation Percentage of Income',
+    label: 'Housing and Transportation',
+    type: 'ht',
     data: {
       ht_ami: {
         label: 'Average Income',
-        icon: 'check-square',
+        title: 'Housing and Transportation Percent of Income for an Averge Income Household',
+        metric: 'ht_ami',
         unit: '%'
       },
       ht_80ami: {
         label: 'Modest Income',
-        icon: 'check-square',
+        title: 'Housing and Transportation Percent of Income for an Modest Income Household',
+        metric: 'ht_80ami',
         unit: '%'
       }
     }
   },{
-    label: 'Housing Percentage of Income',
+    label: 'Housing',
+    type: 'h',
     data: {
       h_ami: {
         label: 'Average Income',
-        icon: 'check-square',
+        title: 'Housing Percent of Income for an Averge Income Household',
+        metric: 'h_ami',
         unit: '%'
       },
       h_80ami: {
         label: 'Modest Income',
-        icon: 'check-square',
+        title: 'Housing Percent of Income for an Modest Income Household',
+        metric: 'h_80ami',
         unit: '%'
       }
     }
   },{
-    label: 'Transportation Percentage of Income',
+    label: 'Transportation',
+    type: 't',
     data: {
       t_ami: {
         label: 'Average Income',
-        icon: 'check-square',
+        title: 'Transportation Percent of Income for an Averge Income Household',
+        metric: 't_ami',
         unit: '%'
       },
       t_80ami: {
         label: 'Modest Income',
-        icon: 'check-square',
+        title: 'Transportation Percent of Income for an Modest Income Household',
+        metric: 't_80ami',
         unit: '%'
       }
     }
-  },{
+  }
+]
+
+const resultsSections = [
+  {
     label: 'Annual Transportation Cost',
     data: {
       t_cost_ami: {
         label: 'Average Income',
-        icon: 'check-square',
         unit: '$'
       },
       t_cost_80a: {
         label: 'Modest Income',
-        icon: 'check-square',
         unit: '$'
       }
     }
@@ -136,18 +147,15 @@ const sections = [
     label: 'Other',
     data: {
       vmt_per_hh: {
-        label: 'Annual Vehicle Miles Traveled per Household',
-        icon: 'check-square',
+        label: 'Annual VMT per Household',
         unit: 'mi'
       },
       co2_per_hh: {
-        label: 'Annual CO2 released per Household',
-        icon: 'check-square',
+        label: 'Annual CO2 per Household',
         unit: 'PPM'
       },
       h_cost: {
-        label: 'Average Monthly Housing Cost per Household',
-        icon: 'check-square',
+        label: 'Average Monthly Housing Cost',
         unit: '$'
       }
     }
@@ -166,41 +174,19 @@ class Main extends React.Component {
       metric: 'h_ami',
       details: null,
       legend: null,
-      busRoutes: []
+      busRoutes: [],
+      title: ''
     }
   }
 
   render() {
-    const { details, legend, metric } = this.state
+    const { details, legend, metric, title } = this.state
     return (
       <div className="wdic">
-        <div className="wdic-header">
-          <div className="metric">
-            <h5>Housing</h5>
-            <div className="btn-group">
-              <button type="button" className={`btn ${metric === 'h_ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'h', 'h_ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Average Income - Some text about an average income goes here" /></button>
-              <button type="button" className={`btn ${metric === 'h_80ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'h', 'h_80ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Modest Income - Some text about an modest income goes here" /></button>
-            </div>
-          </div>
-          <div className="metric">
-            <h5>Transportation</h5>
-            <div className="btn-group">
-              <button type="button" className={`btn ${metric === 't_ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 't', 't_ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Average Income - Some text about an average income goes here" /></button>
-              <button type="button" className={`btn ${metric === 't_80ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 't', 't_80ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Modest Income - Some text about an modest income goes here" /></button>
-            </div>
-          </div>
-          <div className="metric">
-            <h5>Housing & Transportation</h5>
-            <div className="btn-group">
-              <button type="button" className={`btn ${metric === 'ht_ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'ht', 'ht_ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Average Income - Some text about an average income goes here" /></button>
-              <button type="button" className={`btn ${metric === 'ht_80ami' ? 'btn-danger' : 'btn-default'}`} onClick={ this._changeMetric.bind(this, 'ht', 'ht_80ami')}><i className="fa fa-check-square" data-toggle="tooltip" data-placement="bottom"  title="Modest Income - Some text about an modest income goes here" /></button>
-            </div>
-          </div>
-        </div>
         <div className="wdic-body">
           <div className="wdic-sidebar">
             <div className="form">
-              <h4>What Does it Really Cost?</h4>
+              <img src="./images/logo.png" />
               <p>VHS actually. Quinoa vinyl sartorial, pour-over cronut vexillologist VHS. Af microdosing gentrify bicycle rights, marfa affogato tote bag kickstarter readymade authentic air plant craft beer poke VHS. Selvage letterpress af, lumbersexual snackwave shoreditch butcher marfa.</p>
               <form onSubmit={ this._handleSubmit.bind(this) }>
                 <div className="form-group">
@@ -215,7 +201,7 @@ class Main extends React.Component {
                 <div className="form-group">
                   <input type="text" className="form-control" ref="zip" id="zip" placeholder="Zip" />
                 </div>
-                <button type="submit" className="btn btn-default btn-block btn-danger">Lookup my House</button>
+                <button type="submit" className="btn btn-default btn-block">Lookup my House</button>
               </form>
               { this.state.busRoutes.length > 0 &&
                 <div className="routes">
@@ -229,43 +215,84 @@ class Main extends React.Component {
               }
             </div>
           </div>
-          <div className="wdic-map" ref="map" />
+          <div className="wdic-content">
+            <div className="wdic-title">
+              <h1>{ title }</h1>
+            </div>
+            <div className="wdic-map" ref="map" />
+            <div className="wdic-legend">
+              { legend &&
+                legend.map((segment, index) => (
+                  <div className="segment" key={`metric${index}`}>
+                    <div className={`key`} style={{background: segment.color}}></div>
+                    <span>{ segment.max ? `${segment.min} - ${segment.max}` : `${segment.min}+` }</span>
+                  </div>
+                ))}
+            </div>
+          </div>
           <div className="wdic-details">
             { details &&
               <div>
-                { sections.map(section => (
-                  <table>
-                    <tbody>
-                      <tr>
-                        <th colSpan="2">{ section.label }</th>
-                      </tr>
-                      { Object.keys(section.data).map((key, index) => (
-                        <tr key={`row_${index}`}>
-                          <td>
-                            <i className={`fa fa-${section.data[key].icon}`} /> { section.data[key].label }
-                          </td>
-                          <td>
-                            { section.data[key].unit === '$' ? section.data[key].unit : null }
-                            { details[key] }
-                            { section.data[key].unit !== '$' ? section.data[key].unit : null }
-                          </td>
+                <div className="results">
+                  <p>VHS actually. Quinoa vinyl sartorial, pour-over cronut vexillologist VHS. Af microdosing gentrify.</p>
+                  { percentageSections.map((section, index) => (
+                    <table key={`table_${index}`}>
+                      <thead>
+                        <tr>
+                          <th colSpan="2">
+                            <img src={`./images/${section.type}.png`} />
+                            { section.label }
+                          </th>
                         </tr>
-                      )) }
-                    </tbody>
-                  </table>
-                ))}
+                      </thead>
+                      <tbody>
+                        { Object.keys(section.data).map((key, row_index) => (
+                          <tr key={`row_${row_index}`} onClick={ this._changeMetric.bind(this, section.type, section.data[key].metric, section.data[key].title) }>
+                            <td>
+                              { section.data[key].label }
+                            </td>
+                            <td>
+                              { section.data[key].unit === '$' ? section.data[key].unit : null }
+                              { details[key] }
+                              { section.data[key].unit !== '$' ? section.data[key].unit : null }
+                            </td>
+                          </tr>
+                        )) }
+                      </tbody>
+                    </table>
+                  ))}
+                </div>
+                <div className="results">
+                  <p>VHS actually. Quinoa vinyl sartorial, pour-over cronut vexillologist VHS. Af microdosing gentrify.</p>
+                  { resultsSections.map((section, index) => (
+                    <table key={`table_${index}`}>
+                      <thead>
+                        <tr>
+                          <th colSpan="2">
+                            { section.label }
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        { Object.keys(section.data).map((key, row_index) => (
+                          <tr key={`row_${row_index}`}>
+                            <td>
+                              { section.data[key].label }
+                            </td>
+                            <td>
+                              { section.data[key].unit === '$' ? section.data[key].unit : null }
+                              { details[key] }
+                              { section.data[key].unit !== '$' ? section.data[key].unit : null }
+                            </td>
+                          </tr>
+                        )) }
+                      </tbody>
+                    </table>
+                  ))}
+                </div>
               </div>
             }
           </div>
-        </div>
-        <div className="wdic-footer">
-          { legend &&
-            legend.map((segment, index) => (
-              <div className="segment" key={`metric${index}`}>
-                <div className={`key`} style={{background: segment.color}}></div>
-                <span>{ segment.max ? `${segment.min} - ${segment.max}` : `${segment.min}+` }</span>
-              </div>
-            ))}
         </div>
       </div>
     )
@@ -274,7 +301,7 @@ class Main extends React.Component {
   componentDidMount() {
     this._prepareData()
     this._drawMap()
-    this._changeMetric('h', 'h_ami')
+    this._changeMetric('h', 'h_ami', 'Housing and Transportation Percent of Income for an Averge Income Household')
     $('[data-toggle="tooltip"]').tooltip();
   }
 
@@ -345,9 +372,11 @@ class Main extends React.Component {
   }
 
   _drawMap() {
-    var tompkins = { lat: 42.44738962079579, lng: -76.46789477832033 }
+    const tompkins = { lat: 42.44738962079579, lng: -76.46789477832033 }
+    const width = $(document).width()
+    const zoom = (width > 1024) ? 11 : 10
     this.map = new google.maps.Map(this.refs.map, {
-      zoom: 11,
+      zoom,
       center: tompkins
     })
     this.geocoder = new google.maps.Geocoder()
@@ -358,9 +387,9 @@ class Main extends React.Component {
   }
 
   _handleClick(blockgroup) {
-    this._changeMetric(this.state.type, this.state.metric)
+    this._changeMetric(this.state.type, this.state.metric, this.state.title)
     blockgroup.polygon.setOptions({
-      fillColor: '#DB2828',
+      fillColor: '#3690B1',
       fillOpacity: 1
     })
     this.setState({
@@ -368,7 +397,7 @@ class Main extends React.Component {
     })
   }
 
-  _changeMetric(type, metric) {
+  _changeMetric(type, metric, title) {
     const legend = pallettes[type]
     this.blockgroups.map((blockgroup, index) => {
       const value = blockgroup.metadata[metric]
@@ -385,7 +414,7 @@ class Main extends React.Component {
         strokeWeight: 1
       })
     })
-    this.setState({ type, metric, legend })
+    this.setState({ type, metric, legend, title })
   }
 
   _handleSubmit(e) {

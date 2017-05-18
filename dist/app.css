@@ -30,6 +30,10 @@
   padding: 20px;
   background: #FFF;
 }
+.wdic-sidebar img {
+  width: 100%;
+  margin-bottom: 20px;
+}
 .wdic-sidebar h4 {
   margin: 0;
   font-size: 1.1em;
@@ -49,22 +53,27 @@
 }
 .wdic-sidebar form .btn {
   border-radius: 0 0 5px 5px;
+  background: #3690B1;
+  color: #FFFFFF;
+  text-shadow: none;
 }
 .wdic-details {
   flex: 0 0 300px;
   padding: 20px;
-  background: #FFF;
+  background: #3690B1;
+}
+.wdic-details .results {
+  margin-bottom: 20px;
+}
+.wdic-details p {
+  color: #FFFFFF;
 }
 .wdic-details table {
   width: 100%;
-  border-bottom: 1px solid #CCC;
-  border-right: 1px solid #CCC;
-}
-.wdic-details table:first-child {
-  border-bottom: none;
+  background: #FFFFFF;
 }
 .wdic-details table th {
-  background: #DB2828;
+  background: #000;
   color: #FFF;
 }
 .wdic-details table td:first-child {
@@ -76,15 +85,22 @@
   color: #666;
   width: 20%;
 }
+.wdic-details table img {
+  height: 20px;
+  margin-right: 5px;
+}
+.wdic-details table tbody tr {
+  cursor: pointer;
+}
+.wdic-details table tbody tr:hover td,
+.wdic-details table tbody tr:hover th {
+  background-color: #EEE;
+}
 .wdic-details table td,
 .wdic-details table th {
   font-size: .8em;
-  border-left: 1px solid #CCC;
-  border-top: 1px solid #CCC;
+  border-bottom: 1px solid #3690B1;
   padding: 5px;
-}
-.wdic-details table i {
-  color: #DB2828;
 }
 .wdic-map {
   flex: 1;
@@ -93,23 +109,38 @@
 .wdic-map iframe {
   flex: 1;
 }
-.wdic-body {
+.wdic-title {
+  flex: 0 0 50px;
+  background: #000;
+  display: flex;
+  padding: 0 60px;
+}
+.wdic-title h1 {
+  text-align: center;
+  color: #FFFFFF;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 18px;
+  margin: auto;
+}
+.wdic-content {
   flex: 1;
   display: flex;
+  flex-direction: column;
 }
-.wdic-footer {
+.wdic-legend {
   flex: 0 0 35px;
   background: #444;
   padding: 10px;
   display: flex;
   color: #FFF;
 }
-.wdic-footer .segment {
+.wdic-legend .segment {
   flex: 1;
   font-size: 0.8em;
   text-align: center;
 }
-.wdic-footer .key {
+.wdic-legend .key {
   display: inline-block;
   width: 12px;
   height: 12px;
